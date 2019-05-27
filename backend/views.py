@@ -147,10 +147,12 @@ class ServiceAreaView(APIView):
 
 class ServiceAreaSearch(APIView):
 
+    # take a lat/lng pair as arguments and return a list of all polygons that include the given lat/lng
     def get(self, request, *args, **kwargs):
 
+        # lat and lng
         if {'lat', 'lng'}.issubset(request.GET):
-
+            # convert to Point
             try:
                 point = Point(float(request.GET['lat']), float(request.GET['lng']))
             except ValueError as error_message:
@@ -159,13 +161,11 @@ class ServiceAreaSearch(APIView):
                      'Error': {'Tittle': 'Incorrect GET parameter', 'Details': str(error_message)}},
                     status=400
                 )
-
+            # creating query with select related for provider name
             service_area_query = ServiceArea.objects.filter(polygon__contains=point).select_related('provider')
             serializer = ServiceAreaSearchSerializer(service_area_query, many=True,
                                                      read_only=True)
             return Response(serializer.data)
-
-
 
         else:
             return JsonResponse(
