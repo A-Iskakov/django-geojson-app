@@ -3,6 +3,8 @@ An example application to work with polygons in geojson data
 ===================================
 
 Works on Python 3.7 with Django 2.2.
+Fast search querying geodata provided by PostgreSQL 11 with PostGIS
+Test service using PostMan, here is <a href="https://documenter.getpostman.com/view/5037826/S1TSYeXJ" target="_blank">sample documentation</a>
 
 About
 -----
@@ -28,7 +30,7 @@ Usage
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
     sudo apt-get update
     
-    sudo apt-get install postgresql-11 postgresql-server-dev-11
+    sudo apt-get install postgresql-11 postgresql-server-dev-11 postgis
     
     sudo -u postgres psql postgres
     
