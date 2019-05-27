@@ -6,3 +6,4 @@ phonenumbers >= 8.10.12
 django-phonenumber-field >= 2.4.0
 django-language-field >= 0.0.3
 django-money >= 0.14.4
+faker >= 1.0.7

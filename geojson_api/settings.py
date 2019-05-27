@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '06f!oy6%padf(5-yxqx5m(m40!0!9!=u@wuin6zakk_=o^p%6z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -155,6 +155,8 @@ AUTH_USER_MODEL = 'backend.Provider'
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+PHONENUMBER_DB_FORMAT = 'RFC3966'
+PHONENUMBER_DEFAULT_REGION = 'US'
 
 DEFAULT_CURRENCY = 'USD'
 

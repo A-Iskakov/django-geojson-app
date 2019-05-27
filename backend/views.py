@@ -144,6 +144,48 @@ class ServiceAreaView(APIView):
                 status=400
             )
 
+    # delete my service area data
+    def delete(self, request, *args, **kwargs):
+
+        # check authorization
+        if not request.user.is_authenticated:
+            return JsonResponse(
+                {'Status': False,
+                 'Error': {'Tittle': 'Log in required',
+                           'Details': 'Please authorize using Token in your HTTP header'}
+                 },
+                status=403
+            )
+
+        # require id for delete
+        if 'id' not in request.data:
+            return JsonResponse(
+                {'Status': False,
+                 'Error': {'Tittle': 'Missing id parameter',
+                           'Details': 'Please send id when updating data'}
+                 },
+                status=400
+            )
+        service_area_query = ServiceArea.objects.filter(provider_id=request.user.id, id=request.data['id'])
+        if service_area_query.exists():
+            service_area_query.delete()
+
+            return JsonResponse(
+                {'Status': True,
+                 'Message': 'Deleted successfully',
+                 },
+                status=200
+            )
+
+        else:
+            return JsonResponse(
+                {'Status': False,
+                 'Error': {'Tittle': 'Incorrect id parameter',
+                           'Details': 'Please send correct id when deleting data'}
+                 },
+                status=400
+            )
+
 
 class ServiceAreaSearch(APIView):
 
