@@ -56,9 +56,9 @@ just be deleted and created from scratch again. For more informations about
 virtual environments in Python 3, see venv1_ and venv2_ .
 
     cd ~
-    mkdir per_uri_stats
-    cd per_uri_stats
-    git clone https://github.com/A-Iskakov/python3_simple_per_uri_access_log_nginx
+    mkdir geojson-app
+    cd geojson-app
+    git clone https://github.com/A-Iskakov/django-geojson-app
     sudo pip3 install -r requirements.txt
     python3 manage.py runserver 0.0.0.0:8000
 
