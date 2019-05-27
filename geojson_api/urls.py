@@ -18,14 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('geo/admin/', admin.site.urls),
     path('', include('backend.urls', namespace='backend')),
 ]
 if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-                      path('__debug__/', include(debug_toolbar.urls)),
+        path('geo/__debug__/', include(debug_toolbar.urls)),
 
                       # For django versions before 2.0:
                       # url(r'^__debug__/', include(debug_toolbar.urls)),
