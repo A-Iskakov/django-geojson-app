@@ -1,17 +1,18 @@
 from _ctypes import ArgumentError
 
-from django.contrib.gis.geos import Polygon, GEOSException
+from django.contrib.gis.geos import Polygon, GEOSException, Point
 from django.http import JsonResponse
-# Create your views here.
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from backend.models import ServiceArea
-from backend.serializers import ServiceAreaSerializer
+from backend.serializers import ServiceAreaSerializer, ServiceAreaSearchSerializer
 
 
-class RegisterAccount(APIView):
+# to perform action on service areas
+class ServiceAreaView(APIView):
 
+    # get my service areas
     def get(self, request, *args, **kwargs):
         # check authorization
         if not request.user.is_authenticated:
@@ -24,10 +25,10 @@ class RegisterAccount(APIView):
             )
 
         service_area_query = ServiceArea.objects.filter(provider_id=request.user.id)
-        print(service_area_query.count())
         service_area_serializer = ServiceAreaSerializer(service_area_query, many=True, read_only=True)
         return Response(service_area_serializer.data)
 
+    # post new data
     def post(self, request, *args, **kwargs):
 
         # check authorization
@@ -78,6 +79,7 @@ class RegisterAccount(APIView):
                 status=400
             )
 
+    # update my service area data
     def put(self, request, *args, **kwargs):
 
         # check authorization
@@ -90,6 +92,7 @@ class RegisterAccount(APIView):
                 status=403
             )
 
+        # require id for update
         if 'id' not in request.data:
             return JsonResponse(
                 {'Status': False,
@@ -116,6 +119,7 @@ class RegisterAccount(APIView):
                     status=400
                 )
 
+        # validate serializer
         service_area_query = ServiceArea.objects.filter(provider_id=request.user.id, id=request.data['id'])
         if service_area_query.exists():
             service_area_serializer = ServiceAreaSerializer(service_area_query.get(), data=request.data, partial=True)
@@ -140,12 +144,34 @@ class RegisterAccount(APIView):
                 status=400
             )
 
-# test = Polygon(((0, 2), (2, 2), (2, 0), (2, -2), (0, -2), (-2, -2), (-2, 0), (-2, 2), (0, 2)))
-#
-#        # ServiceArea.objects.create(name='asasdd', polygon=test, price=123, provider=Provider.objects.first())
-#        # point = GEOSGeometry('SRID=32140;POINT(3 3)')
-#        point = Point(1, 0)
-#
-#
-#        serializer = ServiceAreaSerializer(ServiceArea.objects.filter(polygon__contains=point), many=True, read_only=True)
-#        return Response(serializer.data)
+
+class ServiceAreaSearch(APIView):
+
+    def get(self, request, *args, **kwargs):
+
+        if {'lat', 'lng'}.issubset(request.GET):
+
+            try:
+                point = Point(float(request.GET['lat']), float(request.GET['lng']))
+            except ValueError as error_message:
+                return JsonResponse(
+                    {'Status': False,
+                     'Error': {'Tittle': 'Incorrect GET parameter', 'Details': str(error_message)}},
+                    status=400
+                )
+
+            service_area_query = ServiceArea.objects.filter(polygon__contains=point).select_related('provider')
+            serializer = ServiceAreaSearchSerializer(service_area_query, many=True,
+                                                     read_only=True)
+            return Response(serializer.data)
+
+
+
+        else:
+            return JsonResponse(
+                {'Status': False,
+                 'Error': {'Tittle': 'Missing parameter(s)',
+                           'Details': 'Please send lat and lng when searching polygons'}
+                 },
+                status=400
+            )

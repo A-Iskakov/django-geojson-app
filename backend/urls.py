@@ -1,10 +1,11 @@
 from django.urls import path
 
-from .views import RegisterAccount
+from .views import ServiceAreaView, ServiceAreaSearch
 
 app_name = 'backend'
 urlpatterns = [
-    path('', RegisterAccount.as_view(), name='index'),
+    path('my-service-areas/', ServiceAreaView.as_view(), name='my-service-areas'),
+    path('search-service-areas/', ServiceAreaSearch.as_view(), name='search-service-areas'),
     # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     # path('<int:question_id>/vote/', views.vote, name='vote'),
