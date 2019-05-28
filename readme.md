@@ -2,7 +2,7 @@
 An example application to work with polygons in geojson data
 ===================================
 
-Works on Python 3.7 with Django 2.2.
+Works on Python 3.7 with Django 2.2/ Django REST Framework 3.
 Fast search querying geodata provided by PostgreSQL 11 with PostGIS
 Test service using PostMan, here is <a href="https://documenter.getpostman.com/view/5037826/S1TSYeXJ" target="_blank">sample documentation</a>
 
