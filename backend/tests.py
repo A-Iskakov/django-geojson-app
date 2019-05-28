@@ -69,7 +69,7 @@ class ViewsTestCase(APITestCase):
         self.test_provider.set_password('password')
         self.test_provider_key = Token.objects.create(user=self.test_provider).key
 
-    def test_employee_registration_and_login(self):
+    def test_provider_service_areas_actions(self):
         c = APIClient(HTTP_AUTHORIZATION=f'Token {self.test_provider_key}')
 
         # check create
